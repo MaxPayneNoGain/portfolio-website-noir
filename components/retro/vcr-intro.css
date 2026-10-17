@@ -1,0 +1,100 @@
+.r-vcr {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  padding: 6vh 6vw;
+  background: var(--vcr-blue);
+  color: #fff;
+  font-family: var(--font-lcd);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  letter-spacing: 0.06em;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .r-vcr {
+    display: none;
+  }
+}
+
+.r-vcr__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.r-vcr__code {
+  align-self: center;
+  justify-self: center;
+  /* longest line + cursor */
+  width: 32ch;
+  margin: 0;
+  font: inherit;
+  font-size: min(0.75em, 3.6vw);
+  line-height: 1.4;
+  white-space: pre;
+}
+
+.r-vcr__ghost {
+  visibility: hidden;
+}
+
+.r-vcr__prompt {
+  opacity: 0.6;
+}
+
+.r-vcr__skip {
+  margin-top: 2vh;
+  text-align: center;
+  font-size: 0.5em;
+  opacity: 0.6;
+}
+
+.r-vcr--static {
+  background: #000;
+}
+
+.r-vcr--static > * {
+  visibility: hidden;
+}
+
+.r-vcr--static > .r-snow {
+  visibility: visible;
+}
+
+.r-snow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  filter: contrast(1.25) brightness(1.05);
+}
+
+/* scanlines over the snow */
+.r-vcr--static::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+.r-crt-on {
+  animation: r-crt-on 0.55s ease-out;
+}
+
+@keyframes r-crt-on {
+  0%,
+  45% {
+    transform: scale(1, 0.004);
+    filter: brightness(4);
+  }
+  100% {
+    transform: none;
+    filter: none;
+  }
+}
