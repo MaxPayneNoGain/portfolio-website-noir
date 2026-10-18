@@ -18,7 +18,7 @@ const LINES = SCRIPT.map(applyKeys)
 
 const pad = (n: number) => String(n).padStart(2, "0")
 
-function vcrStamp(now: Date) {
+export function vcrStamp(now: Date) {
   const hours = now.getHours() % 12 || 12
   return {
     date: `${MONTHS[now.getMonth()]} ${pad(now.getDate())} ${now.getFullYear()}`,
@@ -47,7 +47,6 @@ function Snow() {
     const px = new Uint32Array(img.data.buffer)
     let frame = 0
 
-  
     const rgb = (r: number, g: number, b: number) =>
       0xff000000 | (Math.min(255, b) << 16) | (Math.min(255, g) << 8) | Math.min(255, r)
 

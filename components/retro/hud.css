@@ -1,0 +1,46 @@
+.r-hud {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  font-family: var(--font-lcd);
+  font-size: 1.6rem;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  color: #f4f4f4;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.75);
+}
+
+.r-hud > div {
+  position: absolute;
+}
+
+.r-hud__tl {
+  top: 16px;
+  left: 22px;
+}
+
+.r-hud__tr {
+  top: 16px;
+  right: 22px;
+}
+
+.r-hud__bl {
+  bottom: 16px;
+  left: 22px;
+}
+
+@media (max-width: 860px) {
+  .r-hud {
+    font-size: 1.15rem;
+  }
+
+  .r-hud__tl,
+  .r-hud__bl {
+    left: 14px;
+  }
+
+  .r-hud__tr {
+    right: 14px;
+  }
+}
