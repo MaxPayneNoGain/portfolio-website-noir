@@ -1,6 +1,7 @@
 import { Arcade } from "@/components/retro/arcade"
 import { Contact } from "@/components/retro/contact"
 import { Drink } from "@/components/retro/drink"
+import { Footer } from "@/components/retro/footer"
 import { FrontPage } from "@/components/retro/front-page"
 import { Hero } from "@/components/retro/hero"
 import { Hud } from "@/components/retro/hud"
@@ -21,6 +22,7 @@ export default function Home() {
         <Jukebox />
         <Contact />
       </main>
+      <Footer />
     </VcrIntro>
   )
 }
