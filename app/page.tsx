@@ -1,4 +1,5 @@
 import { Arcade } from "@/components/retro/arcade"
+import { Contact } from "@/components/retro/contact"
 import { Drink } from "@/components/retro/drink"
 import { FrontPage } from "@/components/retro/front-page"
 import { Hero } from "@/components/retro/hero"
@@ -18,6 +19,7 @@ export default function Home() {
         <Arcade />
         <Drink />
         <Jukebox />
+        <Contact />
       </main>
     </VcrIntro>
   )

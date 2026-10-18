@@ -72,3 +72,10 @@ export const SKILLS = [
   { group: "Databases", items: ["PostgreSQL", "Firebase", "SQL Server", "MySQL", "Oracle", "SQLite"] },
   { group: "Tools & Platforms", items: ["Git/GitHub", "Azure", "Docker", "WordPress", "AWS"] },
 ]
+
+export const CONTACT = {
+  email: "nischitrajsharma@gmail.com",
+  github: "https://github.com/MaxPayneNoGain",
+  linkedin: "https://www.linkedin.com/in/nischit-sharma/",
+  resume: "/Nischit_Sharma_Resume_2026.pdf",
+}
