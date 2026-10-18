@@ -8,10 +8,12 @@ import { Hud } from "@/components/retro/hud"
 import { Jukebox } from "@/components/retro/jukebox"
 import { Overlays } from "@/components/retro/overlays"
 import { VcrIntro } from "@/components/retro/vcr-intro"
+import { Weather } from "@/components/retro/weather"
 
 export default function Home() {
   return (
     <VcrIntro>
+      <Weather />
       <Overlays />
       <Hud />
       <main className="r-main">
