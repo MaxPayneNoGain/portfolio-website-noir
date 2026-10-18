@@ -1,0 +1,54 @@
+.dk {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+}
+
+.dk-copy {
+  margin: 12px 0 0;
+  font-family: var(--font-type);
+  font-size: 1.35rem;
+  color: var(--bone);
+}
+
+.dk-btn {
+  margin-top: 28px;
+  padding: 12px 22px 10px;
+  border: 2px solid var(--amber);
+  background: none;
+  color: var(--amber);
+  font-family: var(--font-lcd);
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(233, 196, 106, 0.25);
+}
+
+.dk-btn:hover:not(:disabled) {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+.dk-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.dk-stage {
+  width: min(440px, 85vw);
+  aspect-ratio: 4 / 5;
+  /* lets the pour fade in from above */
+  mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  /* warm bar light behind the glass */
+  background: radial-gradient(ellipse 60% 45% at 50% 62%, rgba(255, 176, 96, 0.13), transparent 70%);
+}
+
+@media (max-width: 860px) {
+  .dk {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+}
