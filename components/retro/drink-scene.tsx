@@ -55,6 +55,27 @@ function linear(top: string, bottom: string) {
   return tex
 }
 
+function woodGrain() {
+  const c = document.createElement("canvas")
+  c.width = 1024
+  c.height = 256
+  const g = c.getContext("2d")!
+  g.fillStyle = "#6e3c1c"
+  g.fillRect(0, 0, 1024, 256)
+  for (let i = 0; i < 260; i++) {
+    const y = Math.random() * 256
+    g.strokeStyle = Math.random() < 0.5 ? `rgba(20, 8, 2, ${Math.random() * 0.35})` : `rgba(120, 70, 35, ${Math.random() * 0.25})`
+    g.lineWidth = 0.5 + Math.random() * 2.5
+    g.beginPath()
+    g.moveTo(0, y)
+    for (let x = 0; x <= 1024; x += 64) g.lineTo(x, y + Math.sin(x * 0.004 + i) * 6)
+    g.stroke()
+  }
+  const tex = new THREE.CanvasTexture(c)
+  tex.colorSpace = THREE.SRGBColorSpace
+  return tex
+}
+
 function meltedIce(size: number) {
   const geo = new RoundedBoxGeometry(size, size, size, 6, 0.09)
   const pos = geo.attributes.position
@@ -192,6 +213,8 @@ function Rocks({ glass }: { glass: Glass }) {
         roughness: 0.02,
         envMapIntensity: 1.5,
       }),
+      counter: new THREE.BoxGeometry(9, 0.35, 3.4),
+      wood: woodGrain(),
       shadow: radial([
         [0, "rgba(0,0,0,0.8)"],
         [1, "rgba(0,0,0,0)"],
@@ -243,6 +266,9 @@ function Rocks({ glass }: { glass: Glass }) {
         <mesh geometry={res.iceA} material={res.iceMat} position={[-0.32, FLOOR + 0.3, -0.2]} rotation-y={0.35} renderOrder={2} />
         <mesh geometry={res.iceB} material={res.iceMat} position={[0.3, FLOOR + 0.275, 0.22]} rotation-y={-0.5} renderOrder={2} />
       </group>
+      <mesh geometry={res.counter} position={[0, -0.175, 0.4]}>
+        <meshStandardMaterial map={res.wood} roughness={0.4} metalness={0} envMapIntensity={1.2} />
+      </mesh>
       <mesh ref={stream} geometry={res.stream} material={res.liquidMat} position={[-0.45, 0, 0.35]} renderOrder={1} />
       <mesh rotation-x={-Math.PI / 2} position-y={0.002}>
         <planeGeometry args={[3, 3]} />
@@ -268,6 +294,7 @@ export default function DrinkScene({ glass }: { glass: Glass }) {
     <Canvas camera={{ position: [0, 1.9, 5.8], fov: 30 }} dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
       <Studio />
       <directionalLight position={[2, 5, 3]} intensity={1.5} color="#fff1dc" />
+      <pointLight position={[0, 3.2, 1.2]} intensity={14} color="#ffc27a" />
       <Rocks glass={glass} />
     </Canvas>
   )

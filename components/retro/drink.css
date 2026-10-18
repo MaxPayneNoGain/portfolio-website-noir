@@ -39,8 +39,9 @@
 .dk-stage {
   width: min(440px, 85vw);
   aspect-ratio: 4 / 5;
-  /* lets the pour fade in from above */
-  mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  /* fades the pour in from above and the counter out at the sides */
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 80%, transparent), linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-composite: intersect;
   /* warm bar light behind the glass */
   background: radial-gradient(ellipse 60% 45% at 50% 62%, rgba(255, 176, 96, 0.13), transparent 70%);
 }
