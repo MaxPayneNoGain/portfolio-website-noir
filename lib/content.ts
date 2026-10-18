@@ -62,3 +62,13 @@ export const PROJECTS: Entry[] = [
     ],
   },
 ]
+
+export const SKILLS = [
+  { group: "Languages", items: ["Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "SQL"] },
+  {
+    group: "Frameworks & Libraries",
+    items: ["React", "React Native", "FastAPI", "Next.js", "pandas", "SQLAlchemy", "SciPy", "Spring Boot", "NumPy"],
+  },
+  { group: "Databases", items: ["PostgreSQL", "Firebase", "SQL Server", "MySQL", "Oracle", "SQLite"] },
+  { group: "Tools & Platforms", items: ["Git/GitHub", "Azure", "Docker", "WordPress", "AWS"] },
+]
