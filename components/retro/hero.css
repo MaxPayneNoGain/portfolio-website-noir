@@ -1,6 +1,7 @@
 .r-hero {
   --hero-red: #ff0f2f;
   --hero-blue: #1450ff;
+  --hero-green: #12e05a;
   position: relative;
   min-height: 100vh;
   display: flex;
@@ -172,15 +173,15 @@
   padding: 9px 18px 7px calc(18px + 0.32em);
   line-height: 1;
   transform: rotate(-4deg);
-  border: 3px solid #8fb0ff;
+  border: 3px solid #8dffb0;
   border-radius: 14px;
   font-family: var(--font-head);
   font-weight: 700;
   font-size: 1.6rem;
   letter-spacing: 0.32em;
-  color: #ff8a96;
-  text-shadow: 0 0 2px #fff, 0 0 8px var(--hero-red), 0 0 20px var(--hero-red);
-  box-shadow: 0 0 8px var(--hero-blue), inset 0 0 8px var(--hero-blue), 0 0 34px rgba(20, 80, 255, 0.5);
+  color: #a6ffc0;
+  text-shadow: 0 0 2px #fff, 0 0 8px var(--hero-green), 0 0 20px var(--hero-green);
+  box-shadow: 0 0 8px var(--hero-green), inset 0 0 8px var(--hero-green), 0 0 34px rgba(18, 224, 90, 0.5);
   animation: r-open 6s steps(1) infinite;
 }
 
