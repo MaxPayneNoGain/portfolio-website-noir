@@ -1,0 +1,50 @@
+.r-signs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* unlit tubes that buzz on when you get close */
+.r-sign {
+  padding: 10px 22px 8px;
+  border: 2px solid rgba(255, 120, 140, 0.25);
+  border-radius: 999px;
+  color: rgba(255, 150, 165, 0.35);
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  letter-spacing: 0.22em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.1s, border-color 0.1s, box-shadow 0.1s, text-shadow 0.1s;
+}
+
+.r-sign:hover,
+.r-sign:focus-visible {
+  border-color: #ff8a9a;
+  color: #ffd0d6;
+  text-shadow: 0 0 6px #ff0f2f, 0 0 16px #ff0f2f;
+  box-shadow: 0 0 10px #ff0f2f, inset 0 0 10px rgba(255, 15, 47, 0.6), 0 0 30px rgba(255, 15, 47, 0.4);
+  animation: r-sign-buzz 0.45s steps(1);
+}
+
+@keyframes r-sign-buzz {
+  15%,
+  45% {
+    opacity: 0.35;
+  }
+  0%,
+  30%,
+  60% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .r-sign:hover,
+  .r-sign:focus-visible {
+    animation: none;
+  }
+}
