@@ -1,6 +1,6 @@
 "use client"
 
-import { type RefObject, useEffect, useRef } from "react"
+import { type RefObject, useEffect, useRef, useState } from "react"
 import { NOW } from "@/lib/content"
 import "./hero.css"
 
@@ -98,9 +98,33 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
 function Lamp({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
   return (
     <div className="r-lamp" aria-hidden="true">
-      <div ref={bulb} className="r-lamp__light" />
+      <div ref={bulb} className="r-lamp__light">
+        <span className="r-moth" />
+        <span className="r-moth" />
+        <span className="r-moth" />
+        <span className="r-moth" />
+      </div>
     </div>
   )
+}
+
+function Lightning() {
+  const [flash, setFlash] = useState(0)
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    let timer: ReturnType<typeof setTimeout>
+    const next = () => {
+      timer = setTimeout(() => {
+        setFlash((f) => f + 1)
+        next()
+      }, rand(30000, 60000))
+    }
+    next()
+    return () => clearTimeout(timer)
+  }, [])
+
+  return flash ? <div key={flash} className="r-lightning" aria-hidden="true" /> : null
 }
 
 function useNeonFlicker(sign: RefObject<HTMLHeadingElement | null>) {
@@ -164,6 +188,7 @@ export function Hero() {
         <span className="r-fog__lit" />
       </div>
       <Rain bulb={bulb} />
+      <Lightning />
       <div className="r-wrap r-hero__grid">
         <div>
           <h1 ref={sign} className="r-neon" aria-label="Nick Sharma">
