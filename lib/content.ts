@@ -23,7 +23,7 @@ export const WORK: Entry[] = [
     points: [
       "Shipped the RHCJC News app (React Native) to the App Store and Google Play, handling builds, code signing and distribution.",
       "Built production web features for a news site reaching 65,000+ readers across 10 Mississippi counties, cutting manual publishing work by over 90%.",
-      "Wrote a Python pipeline that pulls press releases from city and county sites, RSS feeds and email, then files them as WordPress drafts.",
+      "Wrote a Python pipeline that pulls press releases from 10 county sites, city websites, RSS feeds and email, then files them as WordPress drafts.",
     ],
   },
   {
@@ -34,7 +34,7 @@ export const WORK: Entry[] = [
     points: [
       "Built REST endpoints for an inventory management system in Java and Spring Boot, from data model to controllers.",
       "Built React components for a client-facing web app and wired them to the team's Spring Boot APIs.",
-      "Sped up slow Oracle queries by restructuring joins and indexing high-traffic lookups.",
+      "Sped up slow Oracle queries by restructuring joins and adding indexes, cutting several seconds off high-traffic lookups.",
     ],
   },
 ]
