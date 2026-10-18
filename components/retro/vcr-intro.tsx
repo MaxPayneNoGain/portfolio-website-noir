@@ -96,11 +96,13 @@ export function VcrIntro({ children }: { children: ReactNode }) {
   const [stamp, setStamp] = useState({ date: "--- -- ----", time: "--:-- --" })
 
   const finish = useCallback(() => {
+    window.scrollTo(0, 0)
     setPhase("done")
     setPlayed(true)
   }, [])
 
   useEffect(() => {
+    history.scrollRestoration = "manual"
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("done")
       return
