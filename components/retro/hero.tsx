@@ -158,6 +158,11 @@ export function Hero() {
   return (
     <header id="intro" className="r-hero">
       <Lamp bulb={bulb} />
+      <div className="r-fog" aria-hidden="true">
+        <span />
+        <span />
+        <span className="r-fog__lit" />
+      </div>
       <Rain bulb={bulb} />
       <div className="r-wrap r-hero__grid">
         <div>

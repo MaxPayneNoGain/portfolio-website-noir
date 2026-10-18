@@ -56,6 +56,45 @@
   background: radial-gradient(ellipse at center, rgba(255, 215, 140, 0.55), rgba(255, 165, 40, 0.22) 30%, transparent 65%);
 }
 
+.r-fog {
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 97%);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.r-fog span {
+  position: absolute;
+  inset: 0;
+  background: var(--mist) 0 100% / 1400px 700px repeat-x;
+  opacity: 0.16;
+  mask-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0.55) 45%, transparent 85%);
+  animation: r-fog 90s linear infinite;
+}
+
+.r-fog span:nth-child(2) {
+  background-size: 1900px 900px;
+  opacity: 0.12;
+  animation-duration: 140s;
+  animation-direction: reverse;
+}
+
+/* the patch the street lamp lights up */
+.r-fog .r-fog__lit {
+  background-size: 1200px 600px;
+  background-position: 0 0;
+  opacity: 0.32;
+  filter: sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.05);
+  mask-image: radial-gradient(ellipse 45% 60% at 92% 8%, #000, transparent 70%);
+  animation-duration: 70s;
+}
+
+@keyframes r-fog {
+  to {
+    background-position-x: 1400px;
+  }
+}
+
 .r-hero__grid {
   position: relative;
   z-index: 1;
@@ -258,7 +297,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .r-open {
+  .r-open,
+  .r-fog span {
     animation: none;
   }
 }
