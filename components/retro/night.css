@@ -1,0 +1,51 @@
+.r-car {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* headlights coming through a window: a warm patch with the frame's shadow in it */
+.r-car__beam {
+  position: absolute;
+  top: 18%;
+  left: 0;
+  width: 46vw;
+  height: 62vh;
+  background: radial-gradient(ellipse at center, rgba(255, 210, 120, 0.3), rgba(255, 190, 90, 0.12) 50%, transparent 72%);
+  mask-image:
+    linear-gradient(90deg, #000 47%, transparent 48.5% 51.5%, #000 53%),
+    linear-gradient(#000 45%, transparent 46.5% 50.5%, #000 52%);
+  mask-composite: intersect;
+  filter: blur(6px);
+  mix-blend-mode: screen;
+  animation: r-car 7.5s ease-in-out forwards;
+}
+
+.r-car.is-reverse .r-car__beam {
+  animation-name: r-car-back;
+}
+
+@keyframes r-car {
+  from {
+    transform: translateX(-60vw) skewX(14deg) scale(0.85);
+  }
+  50% {
+    transform: translateX(27vw) skewX(0deg) scale(1.1);
+  }
+  to {
+    transform: translateX(115vw) skewX(-14deg) scale(0.85);
+  }
+}
+
+@keyframes r-car-back {
+  from {
+    transform: translateX(115vw) skewX(-14deg) scale(0.85);
+  }
+  50% {
+    transform: translateX(27vw) skewX(0deg) scale(1.1);
+  }
+  to {
+    transform: translateX(-60vw) skewX(14deg) scale(0.85);
+  }
+}

@@ -2,6 +2,7 @@
 
 import { type RefObject, useEffect, useRef, useState } from "react"
 import { NOW } from "@/lib/content"
+import { Headlights } from "./night"
 import "./hero.css"
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min)
@@ -188,6 +189,7 @@ export function Hero() {
         <span className="r-fog__lit" />
       </div>
       <Rain bulb={bulb} />
+      <Headlights />
       <Lightning />
       <div className="r-wrap r-hero__grid">
         <div>
