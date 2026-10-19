@@ -5,14 +5,16 @@
   pointer-events: none;
 }
 
-/* warm patch from a passing car's headlights */
+/* pair of headlights from a passing car */
 .r-car__beam {
   position: absolute;
   top: 18%;
   left: 0;
-  width: 46vw;
-  height: 62vh;
-  background: radial-gradient(ellipse at center, rgba(255, 210, 120, 0.3), rgba(255, 190, 90, 0.12) 50%, transparent 72%);
+  width: max(46vw, 320px);
+  aspect-ratio: 1;
+  background:
+    radial-gradient(ellipse 22% 32% at 26% 50%, rgba(255, 220, 150, 0.4), rgba(255, 190, 90, 0.14) 50%, transparent),
+    radial-gradient(ellipse 22% 32% at 74% 50%, rgba(255, 220, 150, 0.4), rgba(255, 190, 90, 0.14) 50%, transparent);
   filter: blur(6px);
   mix-blend-mode: screen;
   animation: r-car 7.5s ease-in-out forwards;
