@@ -15,7 +15,6 @@
   background:
     radial-gradient(ellipse 22% 32% at 26% 50%, rgba(255, 220, 150, 0.4), rgba(255, 190, 90, 0.14) 50%, transparent),
     radial-gradient(ellipse 22% 32% at 74% 50%, rgba(255, 220, 150, 0.4), rgba(255, 190, 90, 0.14) 50%, transparent);
-  filter: blur(6px);
   mix-blend-mode: screen;
   animation: r-car 7.5s ease-in-out forwards;
 }
