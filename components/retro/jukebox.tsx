@@ -1,22 +1,38 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Pacifico } from "next/font/google"
 import { SKILLS } from "@/lib/content"
 import "./jukebox.css"
 
 const script = Pacifico({ subsets: ["latin"], weight: "400" })
 
-const LETTERS = ["A", "B", "C", "D"]
+const LETTERS = ["A", "B", "C", "D", "E"]
+// 0 is the tenth song, like a real jukebox
+const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 // strips per column; shorter groups get padded with blank ones
 const ROWS = Math.ceil(Math.max(...SKILLS.map((s) => s.items.length)) / 2)
 
 type Pick = { g: number; i: number }
 
+// the keypad is hidden on narrow screens, so the strips need to be tabbable there
+function useNarrow() {
+  const [narrow, setNarrow] = useState(false)
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 600px)")
+    const update = () => setNarrow(query.matches)
+    update()
+    query.addEventListener("change", update)
+    return () => query.removeEventListener("change", update)
+  }, [])
+  return narrow
+}
+
 export function Jukebox() {
   const [pick, setPick] = useState<Pick | null>(null)
   const [letter, setLetter] = useState<number | null>(null)
   const song = pick && SKILLS[pick.g].items[pick.i]
+  const narrow = useNarrow()
 
   const press = (n: number) => {
     if (letter === null) return
@@ -31,6 +47,8 @@ export function Jukebox() {
       <button
         className={`jb-song${pick?.g === g && pick.i === i ? " is-on" : ""}`}
         aria-pressed={pick?.g === g && pick.i === i}
+        // the keypad is how you pick with a keyboard, so the strips stay out of the tab order
+        tabIndex={narrow ? undefined : -1}
         onClick={() => setPick({ g, i })}
       >
         <span className="jb-code">
@@ -102,9 +120,9 @@ export function Jukebox() {
                   ))}
                 </div>
                 <div className="jb-keys__row">
-                  {Array.from({ length: 9 }, (_, n) => (
-                    <button key={n} onClick={() => press(n + 1)}>
-                      {n + 1}
+                  {NUMBERS.map((n) => (
+                    <button key={n} onClick={() => press(n)}>
+                      {n % 10}
                     </button>
                   ))}
                 </div>

@@ -3,6 +3,7 @@
   --jb-b: #1f4fbf;
   --jb-c: #c98a00;
   --jb-d: #1c8a4a;
+  --jb-e: #6f3cb4;
   --chrome: linear-gradient(180deg, #f4f4f4, #9a9a9a 45%, #e8e8e8 55%, #7a7a7a);
   --wood:
     repeating-linear-gradient(92deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 9px),
@@ -99,7 +100,7 @@
 .jb-window {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   padding: 14px;
   border-radius: 8px;
@@ -132,6 +133,9 @@
 }
 .jb-col--3 {
   --band: var(--jb-d);
+}
+.jb-col--4 {
+  --band: var(--jb-e);
 }
 
 .jb-strip {

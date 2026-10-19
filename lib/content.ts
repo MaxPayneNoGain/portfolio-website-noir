@@ -65,22 +65,8 @@ export const PROJECTS: Entry[] = [
 
 export const SKILLS = [
   { group: "Languages", items: ["Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "SQL"] },
-  {
-    group: "Frameworks & Libraries",
-    items: [
-      "React",
-      "React Native",
-      "FastAPI",
-      "Next.js",
-      "pandas",
-      "SQLAlchemy",
-      "SciPy",
-      "Spring Boot",
-      "NumPy",
-      "Tailwind CSS",
-      "Matplotlib",
-    ],
-  },
+  { group: "Frameworks", items: ["React", "React Native", "Next.js", "FastAPI", "Spring Boot", "Tailwind CSS"] },
+  { group: "Libraries", items: ["pandas", "NumPy", "SciPy", "SQLAlchemy", "Matplotlib"] },
   { group: "Databases", items: ["PostgreSQL", "Firebase", "SQL Server", "MySQL", "Oracle", "SQLite"] },
   { group: "Tools & Platforms", items: ["Git/GitHub", "Azure", "Docker", "WordPress", "AWS"] },
 ]
