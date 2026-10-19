@@ -289,9 +289,14 @@ function Rocks({ glass }: { glass: Glass }) {
   )
 }
 
-export default function DrinkScene({ glass }: { glass: Glass }) {
+export default function DrinkScene({ glass, active }: { glass: Glass; active: boolean }) {
   return (
-    <Canvas camera={{ position: [0, 1.9, 5.8], fov: 30 }} dpr={[1, 2]} gl={{ antialias: true, alpha: true }}>
+    <Canvas
+      camera={{ position: [0, 1.9, 5.8], fov: 30 }}
+      dpr={[1, 2]}
+      gl={{ antialias: true, alpha: true }}
+      frameloop={active ? "always" : "never"}
+    >
       <Studio />
       <directionalLight position={[2, 5, 3]} intensity={1.5} color="#fff1dc" />
       <pointLight position={[0, 3.2, 1.2]} intensity={14} color="#ffc27a" />

@@ -84,10 +84,19 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
       frame = requestAnimationFrame(tick)
     }
 
+    // only animate while the landing section is on screen
+    const watch = new IntersectionObserver((entries) => {
+      cancelAnimationFrame(frame)
+      if (!entries[entries.length - 1].isIntersecting) return
+      last = performance.now()
+      frame = requestAnimationFrame(tick)
+    })
+
     resize()
-    frame = requestAnimationFrame(tick)
+    watch.observe(canvas)
     window.addEventListener("resize", resize)
     return () => {
+      watch.disconnect()
       cancelAnimationFrame(frame)
       window.removeEventListener("resize", resize)
     }

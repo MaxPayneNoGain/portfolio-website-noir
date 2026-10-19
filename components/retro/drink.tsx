@@ -9,9 +9,19 @@ const DrinkScene = dynamic(() => import("./drink-scene"), { ssr: false })
 
 export function Drink() {
   const [glass, setGlass] = useState<Glass>("empty")
+  const [onScreen, setOnScreen] = useState(false)
+  const stage = useRef<HTMLDivElement>(null)
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   useEffect(() => () => clearTimeout(timer.current), [])
+
+  useEffect(() => {
+    const watch = new IntersectionObserver((entries) => setOnScreen(entries[entries.length - 1].isIntersecting), {
+      rootMargin: "200px",
+    })
+    if (stage.current) watch.observe(stage.current)
+    return () => watch.disconnect()
+  }, [])
 
   const go = (now: Glass, next: Glass, ms: number) => {
     setGlass(now)
@@ -36,8 +46,14 @@ export function Drink() {
         </button>
       </div>
 
-      <div className="dk-stage" role="img" aria-label={glass === "empty" ? "An empty glass" : "A drink on the rocks"}>
-        <DrinkScene glass={glass} />
+      <div
+        ref={stage}
+        className="dk-stage"
+        role="img"
+        aria-label={glass === "empty" ? "An empty glass" : "A drink on the rocks"}
+      >
+        {/* keeps going offscreen until a pour or sip finishes */}
+        <DrinkScene glass={glass} active={onScreen || busy} />
       </div>
     </section>
   )
