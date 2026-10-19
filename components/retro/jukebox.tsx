@@ -28,7 +28,11 @@ export function Jukebox() {
     const name = SKILLS[g].items[i]
     if (!name) return <span className="jb-song" />
     return (
-      <button className={`jb-song${pick?.g === g && pick.i === i ? " is-on" : ""}`} onClick={() => setPick({ g, i })}>
+      <button
+        className={`jb-song${pick?.g === g && pick.i === i ? " is-on" : ""}`}
+        aria-pressed={pick?.g === g && pick.i === i}
+        onClick={() => setPick({ g, i })}
+      >
         <span className="jb-code">
           {LETTERS[g]}
           {i + 1}
@@ -75,7 +79,7 @@ export function Jukebox() {
 
               <div className="jb-now">
                 <div className="jb-now__label">NOW PLAYING</div>
-                <div className="jb-now__song">
+                <div className="jb-now__song" aria-live="polite">
                   {letter !== null
                     ? `${LETTERS[letter]}_`
                     : pick && song
@@ -87,7 +91,12 @@ export function Jukebox() {
               <div className="jb-keys">
                 <div className="jb-keys__row">
                   {LETTERS.map((l, g) => (
-                    <button key={l} className={letter === g ? "is-on" : undefined} onClick={() => setLetter(g)}>
+                    <button
+                      key={l}
+                      className={letter === g ? "is-on" : undefined}
+                      aria-pressed={letter === g}
+                      onClick={() => setLetter(g)}
+                    >
                       {l}
                     </button>
                   ))}

@@ -7,6 +7,8 @@ export function Footer() {
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     window.dispatchEvent(new Event("tape:rewind"))
     window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" })
+    // so the next tab starts from the top too
+    document.getElementById("name")?.focus({ preventScroll: true })
   }
 
   return (

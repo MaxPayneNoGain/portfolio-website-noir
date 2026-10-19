@@ -208,7 +208,7 @@ export function Hero() {
       <Lightning />
       <div className="r-wrap r-hero__grid">
         <div>
-          <h1 ref={sign} className="r-neon" aria-label="Nick Sharma">
+          <h1 ref={sign} id="name" className="r-neon" aria-label="Nick Sharma" tabIndex={-1}>
             <NeonWord word="NICK" tone="red" />
             <NeonWord word="SHARMA" tone="blue" />
           </h1>

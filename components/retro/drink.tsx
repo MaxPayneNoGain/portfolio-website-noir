@@ -39,8 +39,13 @@ export function Drink() {
         <p className="dk-copy">Here&apos;s a drink.</p>
         <button
           className="dk-btn"
-          disabled={busy}
-          onClick={() => (glass === "full" ? go("drain", "empty", 2200) : go("pour", "full", 3000))}
+          // aria-disabled instead of disabled so focus stays on the button
+          aria-disabled={busy}
+          onClick={() => {
+            if (busy) return
+            if (glass === "full") go("drain", "empty", 2200)
+            else go("pour", "full", 3000)
+          }}
         >
           {glass === "pour" ? "Pouring..." : glass === "full" || glass === "drain" ? "Drink up" : "Take a drink"}
         </button>

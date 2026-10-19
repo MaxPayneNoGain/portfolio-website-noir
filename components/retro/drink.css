@@ -26,12 +26,12 @@
   box-shadow: 0 0 14px rgba(233, 196, 106, 0.25);
 }
 
-.dk-btn:hover:not(:disabled) {
+.dk-btn:hover:not([aria-disabled="true"]) {
   background: var(--amber);
   color: var(--ink);
 }
 
-.dk-btn:disabled {
+.dk-btn[aria-disabled="true"] {
   opacity: 0.6;
   cursor: default;
 }

@@ -204,6 +204,11 @@
   letter-spacing: 0.06em;
 }
 
+/* only focused by the rewind button, no need for a ring */
+.r-neon:focus {
+  outline: none;
+}
+
 .r-neon__line {
   position: relative;
   display: block;

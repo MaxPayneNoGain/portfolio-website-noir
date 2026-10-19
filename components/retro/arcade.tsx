@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Press_Start_2P } from "next/font/google"
 import { PROJECTS, WORK } from "@/lib/content"
 import "./arcade.css"
@@ -25,6 +25,7 @@ export function Arcade() {
   const [credit, setCredit] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [pick, setPick] = useState(WORK[0].id)
+  const firstStage = useRef<HTMLButtonElement>(null)
   const entry = [...WORK, ...PROJECTS].find((e) => e.id === pick)!
 
   useEffect(() => {
@@ -32,6 +33,11 @@ export function Arcade() {
     const t = setTimeout(() => setPlaying(true), 900)
     return () => clearTimeout(t)
   }, [credit])
+
+  // the coin button goes away when the game starts, so hand focus to the stages
+  useEffect(() => {
+    if (playing) firstStage.current?.focus({ preventScroll: true })
+  }, [playing])
 
   const insert = () => setCredit(true)
 
@@ -61,7 +67,9 @@ export function Arcade() {
                     {w.stages.map((e, i) => (
                       <button
                         key={e.id}
+                        ref={wi === 0 && i === 0 ? firstStage : undefined}
                         className={`arc-stage${pick === e.id ? " is-on" : ""}`}
+                        aria-pressed={pick === e.id}
                         onClick={() => setPick(e.id)}
                       >
                         <span>
@@ -90,13 +98,10 @@ export function Arcade() {
             <div className="arc-attract">
               <div className="arc-logo">NICK SHARMA</div>
               <div className="arc-sub">WORK &amp; PROJECTS</div>
-              {credit ? (
-                <div className="arc-coin r-blink">PLAYER 1 READY</div>
-              ) : (
-                <button className="arc-coin r-blink" onClick={insert}>
-                  INSERT COIN
-                </button>
-              )}
+              {/* same button in both states so focus isn't dropped */}
+              <button className="arc-coin r-blink" onClick={insert} aria-disabled={credit}>
+                {credit ? "PLAYER 1 READY" : "INSERT COIN"}
+              </button>
               <div className="arc-fine">1 COIN 1 PLAY</div>
             </div>
           )}
@@ -104,7 +109,14 @@ export function Arcade() {
 
         <div className="arc-door">
           {[0, 1].map((n) => (
-            <button key={n} className="arc-slot" onClick={insert} disabled={credit} aria-label="Insert coin">
+            <button
+              key={n}
+              className="arc-slot"
+              onClick={insert}
+              disabled={credit}
+              aria-label="Insert coin"
+              tabIndex={-1}
+            >
               25¢
             </button>
           ))}

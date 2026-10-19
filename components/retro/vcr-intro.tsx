@@ -161,8 +161,19 @@ export function VcrIntro({ children }: { children: ReactNode }) {
     return () => clearTimeout(timer)
   }, [phase, finish])
 
-  // clicking during the typing cuts to static first
-  const skip = () => (phase === "typing" ? setPhase("static") : finish())
+  // skipping during the typing cuts to static first
+  const skip = useCallback(() => (phase === "typing" ? setPhase("static") : finish()), [phase, finish])
+
+  useEffect(() => {
+    if (phase === "done") return
+    const onKey = (e: KeyboardEvent) => {
+      // leave browser shortcuts alone
+      if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+      skip()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [phase, skip])
 
   const mode = typed.line >= LINES.length ? "PLAY ▶" : "STOP ■"
 
@@ -187,11 +198,14 @@ export function VcrIntro({ children }: { children: ReactNode }) {
             <span>{stamp.date}</span>
             <span>{stamp.time}</span>
           </div>
-          <div className="r-vcr__skip">CLICK TO SKIP</div>
+          <div className="r-vcr__skip">CLICK OR PRESS ANY KEY TO SKIP</div>
           {phase === "static" && <Snow />}
         </div>
       )}
-      <div className={played ? "r-crt-on" : undefined}>{children}</div>
+      {/* keeps tab out of the page while the tape is loading */}
+      <div className={played ? "r-crt-on" : undefined} inert={phase !== "done"}>
+        {children}
+      </div>
     </>
   )
 }

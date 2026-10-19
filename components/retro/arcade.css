@@ -93,6 +93,10 @@
   font-size: 14px;
 }
 
+.arc .arc-coin[aria-disabled="true"] {
+  cursor: default;
+}
+
 .arc-fine {
   margin-top: 20px;
   color: #9fa;
