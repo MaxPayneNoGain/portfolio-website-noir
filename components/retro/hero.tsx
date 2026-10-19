@@ -51,6 +51,9 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
     let last = performance.now()
 
     const tick = (now: number) => {
+      frame = requestAnimationFrame(tick)
+      // 120hz screens would draw twice as often for no visible difference
+      if (now - last < 15) return
       const dt = Math.min(50, now - last) / 16.7
       last = now
       ctx.clearRect(0, 0, width, height)
@@ -80,8 +83,6 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
           d.x = Math.random() * 1.15
         }
       }
-
-      frame = requestAnimationFrame(tick)
     }
 
     // only animate while the landing section is on screen

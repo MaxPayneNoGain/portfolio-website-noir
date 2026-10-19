@@ -30,7 +30,8 @@ function useClock() {
 
 const pad = (n: number) => String(n).padStart(2, "0")
 
-function Pager({ now }: { now: Date | null }) {
+function Pager() {
+  const now = useClock()
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
@@ -111,13 +112,11 @@ function AnsweringMachine() {
 }
 
 export function Contact() {
-  const now = useClock()
-
   return (
     <section id="contact" className="r-section ct">
       <div className="ct-desk">
         <AnsweringMachine />
-        <Pager now={now} />
+        <Pager />
       </div>
 
       <figure className="ct-mug">

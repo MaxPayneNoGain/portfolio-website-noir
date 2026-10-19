@@ -23,15 +23,15 @@ export function Weather() {
     }))
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      width = window.innerWidth
-      height = window.innerHeight
-      canvas.width = width * dpr
-      canvas.height = height * dpr
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      // faint enough that retina resolution doesn't show, and it's a quarter of the pixels
+      width = canvas.width = window.innerWidth
+      height = canvas.height = window.innerHeight
     }
 
     const tick = (now: number) => {
+      frame = requestAnimationFrame(tick)
+      // 120hz screens would draw twice as often for no visible difference
+      if (now - last < 15) return
       const dt = Math.min(50, now - last) / 16.7
       last = now
       ctx.clearRect(0, 0, width, height)
@@ -55,8 +55,6 @@ export function Weather() {
           d.x = Math.random() * 1.15
         }
       }
-
-      frame = requestAnimationFrame(tick)
     }
 
     resize()
