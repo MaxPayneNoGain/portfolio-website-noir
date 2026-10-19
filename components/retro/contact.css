@@ -299,7 +299,33 @@
     justify-items: center;
   }
 
+  .ct-desk {
+    justify-self: stretch;
+  }
+
   .ct-mug {
     max-width: 340px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ct-am__top {
+    gap: 12px;
+  }
+
+  .ct-am__tape {
+    width: 96px;
+    padding: 8px 10px;
+  }
+
+  .ct-am__tape span {
+    width: 26px;
+    height: 26px;
+  }
+
+  .ct-am__brand {
+    font-size: 0.7rem;
+    text-align: right;
+    white-space: normal;
   }
 }

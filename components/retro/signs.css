@@ -22,7 +22,8 @@
 }
 
 .r-sign:hover,
-.r-sign:focus-visible {
+.r-sign:focus-visible,
+.r-sign.is-lit {
   border-color: #ff8a9a;
   color: #ffd0d6;
   text-shadow: 0 0 6px #ff0f2f, 0 0 16px #ff0f2f;
@@ -44,7 +45,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .r-sign:hover,
-  .r-sign:focus-visible {
+  .r-sign:focus-visible,
+  .r-sign.is-lit {
     animation: none;
   }
 }

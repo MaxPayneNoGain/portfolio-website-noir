@@ -228,3 +228,20 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .arc-top {
+    grid-template-columns: 1fr auto;
+    row-gap: 12px;
+  }
+
+  .arc-top > :last-child {
+    grid-column: 2;
+  }
+
+  .arc-top__mid {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+}

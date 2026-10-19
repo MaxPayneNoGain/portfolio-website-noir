@@ -41,6 +41,8 @@
 }
 
 html {
+  /* glows hanging off the edge were making phones zoom out */
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -112,6 +114,14 @@ a {
   position: relative;
   padding-top: 110px;
   padding-bottom: 110px;
+}
+
+@media (max-width: 600px) {
+  .r-wrap,
+  .r-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 }
 
 .r-kicker {

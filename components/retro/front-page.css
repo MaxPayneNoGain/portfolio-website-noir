@@ -481,3 +481,11 @@
     border-top: 3px double var(--np-ink);
   }
 }
+
+@media (max-width: 600px) {
+  .np__rail,
+  .np__fold,
+  .np__below {
+    display: none;
+  }
+}

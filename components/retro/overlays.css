@@ -1,6 +1,13 @@
-.r-fx > div {
+.r-fx {
   position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.r-fx > div {
+  position: absolute;
 }
 
 .r-vignette {
