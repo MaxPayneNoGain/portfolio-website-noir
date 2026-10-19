@@ -3,6 +3,7 @@
   position: fixed;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -13,24 +14,36 @@
   height: 100%;
 }
 
+/* same as the hero fog: masks on still wrappers, the mist slides inside */
 .r-weather__fog {
   position: absolute;
   inset: 0;
-  background: var(--mist) 0 100% / 1400px 700px repeat-x;
   opacity: 0.09;
   mask-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0.4) 50%, transparent 90%);
-  animation: r-fog 110s linear infinite;
+}
+
+.r-weather__fog span {
+  --tile: 1400px;
+  position: absolute;
+  inset: 0 0 0 calc(-1 * var(--tile));
+  background: var(--mist) 0 100% / var(--tile) 700px repeat-x;
+  animation: r-drift 110s linear infinite;
+  will-change: transform;
 }
 
 .r-weather__fog + .r-weather__fog {
-  background-size: 1900px 900px;
   opacity: 0.07;
-  animation-duration: 160s;
+}
+
+.r-weather__fog + .r-weather__fog span {
+  --tile: 1900px;
+  background-size: var(--tile) 900px;
+  animation-duration: 217s;
   animation-direction: reverse;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .r-weather__fog {
+  .r-weather__fog span {
     animation: none;
   }
 }

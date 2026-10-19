@@ -193,9 +193,15 @@ export function Hero() {
     <header id="intro" className="r-hero">
       <Lamp bulb={bulb} />
       <div className="r-fog" aria-hidden="true">
-        <span />
-        <span />
-        <span className="r-fog__lit" />
+        <div className="r-fog__layer">
+          <span />
+        </div>
+        <div className="r-fog__layer">
+          <span />
+        </div>
+        <div className="r-fog__lit">
+          <span />
+        </div>
       </div>
       <Rain bulb={bulb} />
       <Headlights />

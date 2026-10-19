@@ -70,8 +70,12 @@ export function Weather() {
 
   return (
     <div className="r-weather" aria-hidden="true">
-      <span className="r-weather__fog" />
-      <span className="r-weather__fog" />
+      <div className="r-weather__fog">
+        <span />
+      </div>
+      <div className="r-weather__fog">
+        <span />
+      </div>
       <canvas ref={ref} />
     </div>
   )

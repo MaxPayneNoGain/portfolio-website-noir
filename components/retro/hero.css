@@ -65,30 +65,49 @@
   pointer-events: none;
 }
 
+/* each layer is one tile wider than the hero and slides by a tile, so it moves instead of repainting */
 .r-fog span {
+  --tile: 1400px;
   position: absolute;
-  inset: 0;
-  background: var(--mist) 0 100% / 1400px 700px repeat-x;
-  opacity: 0.16;
-  mask-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0.55) 45%, transparent 85%);
-  animation: r-fog 90s linear infinite;
+  inset: 0 0 0 calc(-1 * var(--tile));
+  background: var(--mist) 0 100% / var(--tile) 700px repeat-x;
+  animation: r-drift 90s linear infinite;
+  will-change: transform;
 }
 
-.r-fog span:nth-child(2) {
-  background-size: 1900px 900px;
+/* masks go on still wrappers; a mask on the moving layer makes firefox redraw it every frame */
+.r-fog__layer,
+.r-fog__lit {
+  position: absolute;
+  inset: 0;
+}
+
+.r-fog__layer {
+  opacity: 0.16;
+  mask-image: linear-gradient(to top, #000, rgba(0, 0, 0, 0.55) 45%, transparent 85%);
+}
+
+.r-fog__layer + .r-fog__layer {
   opacity: 0.12;
-  animation-duration: 140s;
+}
+
+.r-fog__layer + .r-fog__layer span {
+  --tile: 1900px;
+  background-size: var(--tile) 900px;
+  animation-duration: 190s;
   animation-direction: reverse;
 }
 
 /* the patch the street lamp lights up */
-.r-fog .r-fog__lit {
-  background-size: 1200px 600px;
-  background-position: 0 0;
+.r-fog__lit {
   opacity: 0.32;
-  filter: sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.05);
   mask-image: radial-gradient(ellipse 45% 60% at 92% 8%, #000, transparent 70%);
-  animation-duration: 70s;
+}
+
+.r-fog__lit span {
+  --tile: 1200px;
+  background: var(--mist-lit) 0 0 / var(--tile) 600px repeat-x;
+  animation-duration: 60s;
 }
 
 .r-moth {
@@ -164,12 +183,6 @@
   }
   40% {
     opacity: 0;
-  }
-}
-
-@keyframes r-fog {
-  to {
-    background-position-x: 1400px;
   }
 }
 
