@@ -68,6 +68,7 @@
 
 .ct-am__tape.is-playing span {
   animation: ct-spin 1.4s linear infinite;
+  will-change: transform;
 }
 
 .ct-am__brand {

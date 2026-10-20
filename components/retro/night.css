@@ -16,6 +16,7 @@
     radial-gradient(ellipse 22% 32% at 26% 50%, rgba(255, 220, 150, 0.4), rgba(255, 190, 90, 0.14) 50%, transparent),
     radial-gradient(ellipse 22% 32% at 74% 50%, rgba(255, 220, 150, 0.4), rgba(255, 190, 90, 0.14) 50%, transparent);
   animation: r-car 7.5s ease-in-out forwards;
+  will-change: transform;
 }
 
 .r-car.is-reverse .r-car__beam {

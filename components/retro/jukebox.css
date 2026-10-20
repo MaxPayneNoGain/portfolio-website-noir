@@ -41,6 +41,7 @@
     linear-gradient(180deg, #ffe08a, #ff9a2a 40%, #e8401c 75%, #a8140f);
   box-shadow: 0 0 40px rgba(255, 140, 40, 0.55), inset 0 0 0 3px #f6f6f6, inset 0 0 0 5px #8a8a8a;
   animation: jb-glow 5s ease-in-out infinite alternate;
+  will-change: filter;
 }
 
 .jb-arch__inner {
@@ -234,6 +235,7 @@ button.jb-song:hover {
 
 .is-playing .jb-record {
   animation: jb-spin 1.8s linear infinite;
+  will-change: transform;
 }
 
 .jb-record__label {

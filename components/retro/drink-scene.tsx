@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js"
+import { onTick } from "@/lib/clock"
 
 export type Glass = "empty" | "pour" | "full" | "drain"
 
@@ -26,6 +27,12 @@ const INNER = 0.92
 const FLOOR = 0.322
 const DEPTH = 0.42
 const TOP = 4
+
+// set when something moved and the scene needs another frame
+let dirty = true
+const wake = () => {
+  dirty = true
+}
 
 function radial(stops: [number, string][]) {
   const c = document.createElement("canvas")
@@ -166,6 +173,7 @@ function Studio() {
     const pmrem = new THREE.PMREMGenerator(gl)
     const env = pmrem.fromScene(room, 0).texture
     scene.environment = env
+    wake()
 
     return () => {
       scene.environment = null
@@ -229,7 +237,17 @@ function Rocks({ glass }: { glass: Glass }) {
 
   useEffect(() => () => Object.values(res).forEach((r) => r.dispose()), [res])
 
-  useFrame((state, dt) => {
+  const gl = useThree((s) => s.gl)
+  useEffect(wake, [glass])
+  useEffect(() => {
+    const el = gl.domElement
+    el.addEventListener("pointermove", wake)
+    return () => el.removeEventListener("pointermove", wake)
+  }, [gl])
+
+  useFrame((state, delta) => {
+    // the gap since the last frame can be long after sitting idle
+    const dt = Math.min(delta, 0.05)
     const pouring = glass === "pour"
     flow.current = THREE.MathUtils.clamp(flow.current + (pouring ? dt : -dt) * 4, 0, 1)
     if (pouring && flow.current > 0.6) level.current = Math.min(1, level.current + dt / 2.3)
@@ -252,8 +270,12 @@ function Rocks({ glass }: { glass: Glass }) {
     stream.current.scale.set(flow.current, TOP - surface, flow.current)
     glow.current.opacity = level.current * 0.22
 
-    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, state.pointer.x * 0.3, 0.05)
+    const camX = state.pointer.x * 0.3
+    state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, camX, 3, dt)
     state.camera.lookAt(0, 0.95, 0)
+
+    const settled = !pouring && !drinking && flow.current === 0 && lift.current < 0.001
+    if (!settled || Math.abs(state.camera.position.x - camX) > 0.002) wake()
   })
 
   return (
@@ -289,14 +311,33 @@ function Rocks({ glass }: { glass: Glass }) {
   )
 }
 
+// draws on the shared clock, and only when something moved, so it sits idle between sips
+function Ticker({ active }: { active: boolean }) {
+  const advance = useThree((s) => s.advance)
+  const size = useThree((s) => s.size)
+  useEffect(wake, [size])
+
+  useEffect(() => {
+    if (!active) return
+    return onTick((now) => {
+      if (!dirty) return
+      dirty = false
+      advance(now / 1000)
+    })
+  }, [active, advance])
+
+  return null
+}
+
 export default function DrinkScene({ glass, active }: { glass: Glass; active: boolean }) {
   return (
     <Canvas
       camera={{ position: [0, 1.9, 5.8], fov: 30 }}
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true }}
-      frameloop={active ? "always" : "never"}
+      frameloop="never"
     >
+      <Ticker active={active} />
       <Studio />
       <directionalLight position={[2, 5, 3]} intensity={1.5} color="#fff1dc" />
       <pointLight position={[0, 3.2, 1.2]} intensity={14} color="#ffc27a" />

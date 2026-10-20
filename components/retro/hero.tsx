@@ -1,11 +1,16 @@
 "use client"
 
 import { type RefObject, useEffect, useRef, useState } from "react"
+import { onTick } from "@/lib/clock"
 import { NOW } from "@/lib/content"
+import { drawStreak, SLANT, streak } from "@/lib/streak"
 import { Headlights } from "./night"
 import "./hero.css"
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min)
+
+const DEPTHS = 4
+const SHADES = 8
 
 function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -19,14 +24,24 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
     let height = 0
     let lampX = 0
     let lampY = 0
-    let frame = 0
+    let stop = () => {}
 
     // z is depth
-    const drops = Array.from({ length: 380 }, () => ({
-      x: Math.random() * 1.1,
-      y: Math.random(),
-      z: Math.random() ** 1.4,
-    }))
+    const drops = Array.from({ length: 380 }, () => {
+      const z = Math.random() ** 1.4
+      return { x: Math.random() * 1.1, y: Math.random(), z, depth: Math.min(DEPTHS - 1, Math.floor(z * DEPTHS)) }
+    })
+
+    // one streak per depth and lamp shade, warmer and brighter near the lamp
+    const streaks = Array.from({ length: DEPTHS * SHADES }, (_, i) => {
+      const z = (Math.floor(i / SHADES) + 0.5) / DEPTHS
+      const k = (i % SHADES) / (SHADES - 1)
+      const alpha = 0.1 + z * 0.18 + k * (0.3 + z * 0.35)
+      const r = 170 + k * 85
+      const g = 185 - k * 10
+      const b = 210 - k * 165
+      return streak(10 + z * 34, 0.6 + z * 1.2, `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${alpha})`)
+    })
 
     const lampLight = (x: number, y: number) => {
       const dx = (x - lampX) / 480
@@ -35,12 +50,9 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
     }
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      width = canvas.clientWidth
-      height = canvas.clientHeight
-      canvas.width = width * dpr
-      canvas.height = height * dpr
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      // thin moving streaks look the same at 1x
+      width = canvas.width = canvas.clientWidth
+      height = canvas.height = canvas.clientHeight
 
       const box = canvas.getBoundingClientRect()
       const b = bulb.current?.getBoundingClientRect()
@@ -50,10 +62,7 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
 
     let last = performance.now()
 
-    const tick = (now: number) => {
-      frame = requestAnimationFrame(tick)
-      // 120hz screens would draw twice as often for no visible difference
-      if (now - last < 15) return
+    const draw = (now: number) => {
       const dt = Math.min(50, now - last) / 16.7
       last = now
       ctx.clearRect(0, 0, width, height)
@@ -63,21 +72,11 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
         const speed = 7 + d.z * 15
         const x = d.x * width
         const y = d.y * height
-        const k = lampLight(x, y)
-
-        const alpha = 0.1 + d.z * 0.18 + k * (0.3 + d.z * 0.35)
-        const r = 170 + k * 85
-        const g = 185 - k * 10
-        const b = 210 - k * 165
-        ctx.strokeStyle = `rgba(${r | 0}, ${g | 0}, ${b | 0}, ${alpha})`
-        ctx.lineWidth = 0.6 + d.z * 1.2
-        ctx.beginPath()
-        ctx.moveTo(x, y)
-        ctx.lineTo(x - len * 0.12, y + len)
-        ctx.stroke()
+        const shade = Math.round(lampLight(x, y) * (SHADES - 1))
+        drawStreak(ctx, streaks[d.depth * SHADES + shade], x, y, len)
 
         d.y += (speed * dt) / height
-        d.x -= (speed * 0.12 * dt) / width
+        d.x -= (speed * SLANT * dt) / width
         if (d.y > 1.05) {
           d.y = -0.05
           d.x = Math.random() * 1.15
@@ -87,10 +86,10 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
 
     // only animate while the landing section is on screen
     const watch = new IntersectionObserver((entries) => {
-      cancelAnimationFrame(frame)
+      stop()
       if (!entries[entries.length - 1].isIntersecting) return
       last = performance.now()
-      frame = requestAnimationFrame(tick)
+      stop = onTick(draw)
     })
 
     resize()
@@ -98,7 +97,7 @@ function Rain({ bulb }: { bulb: RefObject<HTMLDivElement | null> }) {
     window.addEventListener("resize", resize)
     return () => {
       watch.disconnect()
-      cancelAnimationFrame(frame)
+      stop()
       window.removeEventListener("resize", resize)
     }
   }, [bulb])

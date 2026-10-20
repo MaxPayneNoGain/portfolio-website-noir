@@ -118,6 +118,7 @@
   background: #fff3d6;
   box-shadow: 0 0 6px 1px rgba(255, 220, 150, 0.9);
   animation: r-moth 3.1s ease-in-out infinite;
+  will-change: transform;
 }
 
 .r-moth:nth-child(2) {
@@ -147,6 +148,7 @@
   mix-blend-mode: screen;
   opacity: 0;
   animation: r-lightning 0.9s linear;
+  will-change: opacity;
 }
 
 @keyframes r-moth {
@@ -318,6 +320,7 @@
   text-shadow: 0 0 2px #fff, 0 0 8px var(--hero-green), 0 0 20px var(--hero-green);
   box-shadow: 0 0 8px var(--hero-green), inset 0 0 8px var(--hero-green), 0 0 34px rgba(18, 224, 90, 0.5);
   animation: r-open 6s steps(1) infinite;
+  will-change: opacity;
 }
 
 .r-hero__side {

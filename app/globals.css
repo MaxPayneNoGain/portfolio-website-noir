@@ -66,6 +66,7 @@ a {
 
 .r-blink {
   animation: r-blink 1s steps(1) infinite;
+  will-change: opacity;
 }
 
 @keyframes r-blink {
