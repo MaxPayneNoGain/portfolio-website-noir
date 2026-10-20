@@ -198,6 +198,35 @@ export function blip() {
   osc.stop(t + 0.07)
 }
 
+// times the sign flickers on, matching r-sign-buzz in signs.css
+const FLICKER = [0, 0.135, 0.27]
+
+// a neon tube stuttering on
+export function neon() {
+  if (!ctx) return
+  const ac = ctx
+  const t = ac.currentTime
+
+  const hum = ac.createOscillator()
+  hum.type = "sawtooth"
+  hum.frequency.value = 120
+  const low = ac.createBiquadFilter()
+  low.type = "lowpass"
+  low.frequency.value = 1800
+  const gate = ac.createGain()
+  gate.gain.setValueAtTime(0, t)
+  FLICKER.forEach((at, i) => {
+    gate.gain.setValueAtTime(0.05, t + at)
+    if (i < FLICKER.length - 1) gate.gain.setValueAtTime(0.012, t + at + 0.067)
+    burst(ac, t + at, 3000, 0.8, 0.12, 0.015)
+  })
+  gate.gain.setValueAtTime(0.05, t + 0.32)
+  gate.gain.linearRampToValueAtTime(0, t + 0.36)
+  hum.connect(low).connect(gate).connect(out)
+  hum.start(t)
+  hum.stop(t + 0.4)
+}
+
 // where the jazz picks up the first time, in seconds. after that it loops from the top
 const JAZZ_FROM = 90
 
