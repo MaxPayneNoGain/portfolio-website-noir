@@ -1,4 +1,4 @@
-// every sound is made here in code, on one audio context opened by the first click or key
+// every sound plays from here, on one audio context opened by the first click or key
 
 let ctx: AudioContext | null = null
 let out: GainNode
@@ -227,6 +227,40 @@ export function neon() {
   hum.stop(t + 0.4)
 }
 
+const clips = new Map<string, Promise<AudioBuffer>>()
+
+// short recordings are decoded once and kept
+function load(src: string) {
+  if (!clips.has(src)) {
+    clips.set(
+      src,
+      fetch(src)
+        .then((r) => r.arrayBuffer())
+        .then((data) => ctx!.decodeAudioData(data)),
+    )
+  }
+  return clips.get(src)!
+}
+
+function play(src: string, level: number, from = 0) {
+  if (!ctx) return
+  const ac = ctx
+  load(src).then((buffer) => {
+    const node = ac.createBufferSource()
+    node.buffer = buffer
+    const gain = ac.createGain()
+    gain.gain.value = level
+    node.connect(gain).connect(out)
+    node.start(0, from)
+  })
+}
+
+// whiskey poured over ice
+export const pour = () => play("/audio/pour.mp3", 0.9)
+
+// the tumbler set back on the counter
+export const setDown = () => play("/audio/glass-down.mp3", 0.5, 0.045)
+
 // where the jazz picks up the first time, in seconds. after that it loops from the top
 const JAZZ_FROM = 90
 
@@ -251,6 +285,8 @@ export function startAmbience() {
   const ac = ctx
   track(ac, "/audio/night-jazz.mp3", 0.35, JAZZ_FROM)
   track(ac, "/audio/light-rain.mp3", 0.15)
+  load("/audio/pour.mp3")
+  load("/audio/glass-down.mp3")
 
   // nothing plays in a background tab
   document.addEventListener("visibilitychange", () => (document.hidden ? ac.suspend() : ac.resume()))

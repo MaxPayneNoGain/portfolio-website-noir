@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js"
 import { onTick } from "@/lib/clock"
+import { setDown } from "@/lib/sound"
 
 export type Glass = "empty" | "pour" | "full" | "drain"
 
@@ -200,6 +201,7 @@ function Rocks({ glass }: { glass: Glass }) {
   const level = useRef(0)
   const flow = useRef(0)
   const lift = useRef(0)
+  const raised = useRef(false)
   const surfaceY = useMemo(() => ({ value: -1 }), [])
 
   const res = useMemo(
@@ -255,6 +257,11 @@ function Rocks({ glass }: { glass: Glass }) {
     const drinking = glass === "drain" && level.current > 0
     lift.current = THREE.MathUtils.damp(lift.current, drinking ? 1 : 0, 6, dt)
     if (drinking && lift.current > 0.8) level.current = Math.max(0, level.current - dt / 1.2)
+    if (lift.current > 0.5) raised.current = true
+    else if (raised.current && lift.current < 0.1) {
+      raised.current = false
+      setDown()
+    }
 
     held.current.position.y = lift.current * 0.25
     held.current.rotation.set(lift.current * 0.35, 0, lift.current * 0.1)

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
+import { pour } from "@/lib/sound"
 import type { Glass } from "./drink-scene"
 import "./drink.css"
 
@@ -44,7 +45,10 @@ export function Drink() {
           onClick={() => {
             if (busy) return
             if (glass === "full") go("drain", "empty", 2200)
-            else go("pour", "full", 3000)
+            else {
+              pour()
+              go("pour", "full", 3000)
+            }
           }}
         >
           {glass === "pour" ? "Pouring..." : glass === "full" || glass === "drain" ? "Drink up" : "Take a drink"}
