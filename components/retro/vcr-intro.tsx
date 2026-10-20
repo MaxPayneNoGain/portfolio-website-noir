@@ -1,7 +1,7 @@
 "use client"
 
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react"
-import { crtOn, enterKey, keyClick, tvStatic, unlock } from "@/lib/sound"
+import { crtOn, enterKey, keyClick, startAmbience, tvStatic, unlock } from "@/lib/sound"
 import "./vcr-intro.css"
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -99,6 +99,7 @@ export function VcrIntro({ children }: { children: ReactNode }) {
   const finish = useCallback(() => {
     window.scrollTo(0, 0)
     crtOn()
+    startAmbience()
     setPhase("done")
     setPlayed(true)
   }, [])

@@ -139,3 +139,28 @@ export function crtOn() {
   whoosh.connect(band).connect(whooshEnv).connect(out)
   whoosh.start(t, Math.random() * 0.5, 0.35)
 }
+
+// where the jazz picks up the first time, in seconds. after that it loops from the top
+const JAZZ_FROM = 90
+
+let ambience = false
+
+// the bar's jazz, faded in once the tape is playing
+export function startAmbience() {
+  if (!ctx || ambience) return
+  ambience = true
+  const ac = ctx
+  const t = ac.currentTime
+
+  const jazz = new Audio("/audio/night-jazz.mp3")
+  jazz.loop = true
+  jazz.addEventListener("loadedmetadata", () => (jazz.currentTime = JAZZ_FROM), { once: true })
+  const jazzLevel = ac.createGain()
+  jazzLevel.gain.setValueAtTime(0, t)
+  jazzLevel.gain.linearRampToValueAtTime(0.35, t + 4)
+  ac.createMediaElementSource(jazz).connect(jazzLevel).connect(out)
+  jazz.play().catch(() => {})
+
+  // nothing plays in a background tab
+  document.addEventListener("visibilitychange", () => (document.hidden ? ac.suspend() : ac.resume()))
+}
