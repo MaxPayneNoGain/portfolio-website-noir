@@ -145,21 +145,25 @@ const JAZZ_FROM = 90
 
 let ambience = false
 
-// the bar's jazz, faded in once the tape is playing
+// a looping recording, faded in from silence
+function track(ac: AudioContext, src: string, level: number, from = 0) {
+  const audio = new Audio(src)
+  audio.loop = true
+  if (from) audio.addEventListener("loadedmetadata", () => (audio.currentTime = from), { once: true })
+  const gain = ac.createGain()
+  gain.gain.setValueAtTime(0, ac.currentTime)
+  gain.gain.linearRampToValueAtTime(level, ac.currentTime + 4)
+  ac.createMediaElementSource(audio).connect(gain).connect(out)
+  audio.play().catch(() => {})
+}
+
+// the bar's jazz with light rain outside, faded in once the tape is playing
 export function startAmbience() {
   if (!ctx || ambience) return
   ambience = true
   const ac = ctx
-  const t = ac.currentTime
-
-  const jazz = new Audio("/audio/night-jazz.mp3")
-  jazz.loop = true
-  jazz.addEventListener("loadedmetadata", () => (jazz.currentTime = JAZZ_FROM), { once: true })
-  const jazzLevel = ac.createGain()
-  jazzLevel.gain.setValueAtTime(0, t)
-  jazzLevel.gain.linearRampToValueAtTime(0.35, t + 4)
-  ac.createMediaElementSource(jazz).connect(jazzLevel).connect(out)
-  jazz.play().catch(() => {})
+  track(ac, "/audio/night-jazz.mp3", 0.35, JAZZ_FROM)
+  track(ac, "/audio/light-rain.mp3", 0.15)
 
   // nothing plays in a background tab
   document.addEventListener("visibilitychange", () => (document.hidden ? ac.suspend() : ac.resume()))
