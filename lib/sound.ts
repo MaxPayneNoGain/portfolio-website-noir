@@ -105,3 +105,37 @@ export function tvStatic() {
     hum.stop(end + 0.06)
   }
 }
+
+// the crt coming on: a soft knock, then a whoosh and tone sweeping up
+export function crtOn() {
+  if (!ctx) return
+  const ac = ctx
+  const t = ac.currentTime
+  thump(ac, t, 90, 0.3, 0.12)
+
+  const tone = ac.createOscillator()
+  tone.type = "triangle"
+  tone.frequency.setValueAtTime(180, t)
+  tone.frequency.exponentialRampToValueAtTime(1400, t + 0.3)
+  const toneEnv = ac.createGain()
+  toneEnv.gain.setValueAtTime(0, t)
+  toneEnv.gain.linearRampToValueAtTime(0.08, t + 0.05)
+  toneEnv.gain.exponentialRampToValueAtTime(0.001, t + 0.4)
+  tone.connect(toneEnv).connect(out)
+  tone.start(t)
+  tone.stop(t + 0.4)
+
+  const whoosh = ac.createBufferSource()
+  whoosh.buffer = noise
+  const band = ac.createBiquadFilter()
+  band.type = "bandpass"
+  band.Q.value = 2
+  band.frequency.setValueAtTime(400, t)
+  band.frequency.exponentialRampToValueAtTime(4000, t + 0.3)
+  const whooshEnv = ac.createGain()
+  whooshEnv.gain.setValueAtTime(0, t)
+  whooshEnv.gain.linearRampToValueAtTime(0.12, t + 0.06)
+  whooshEnv.gain.exponentialRampToValueAtTime(0.001, t + 0.35)
+  whoosh.connect(band).connect(whooshEnv).connect(out)
+  whoosh.start(t, Math.random() * 0.5, 0.35)
+}
