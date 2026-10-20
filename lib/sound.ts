@@ -198,6 +198,17 @@ export function blip() {
   osc.stop(t + 0.07)
 }
 
+// a chunky jukebox key: heavier and lower than a keyboard key
+export function jukeKey() {
+  if (!ctx) return
+  const t = ctx.currentTime
+  const r = 0.9 + Math.random() * 0.2
+  burst(ctx, t, 1600 * r, 1.5, 0.5, 0.03)
+  thump(ctx, t, 110 * r, 0.35, 0.06)
+  // the key springing back
+  burst(ctx, t + 0.06 + Math.random() * 0.02, 1200 * r, 2, 0.15, 0.025)
+}
+
 // times the sign flickers on, matching r-sign-buzz in signs.css
 const FLICKER = [0, 0.135, 0.27]
 

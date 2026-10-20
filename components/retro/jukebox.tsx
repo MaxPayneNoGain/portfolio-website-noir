@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Pacifico } from "next/font/google"
 import { SKILLS } from "@/lib/content"
+import { jukeKey } from "@/lib/sound"
 import "./jukebox.css"
 
 const script = Pacifico({ subsets: ["latin"], weight: "400" })
@@ -35,6 +36,7 @@ export function Jukebox() {
   const narrow = useNarrow()
 
   const press = (n: number) => {
+    jukeKey()
     if (letter === null) return
     if (n <= SKILLS[letter].items.length) setPick({ g: letter, i: n - 1 })
     setLetter(null)
@@ -49,7 +51,10 @@ export function Jukebox() {
         aria-pressed={pick?.g === g && pick.i === i}
         // the keypad is how you pick with a keyboard, so the strips stay out of the tab order
         tabIndex={narrow ? undefined : -1}
-        onClick={() => setPick({ g, i })}
+        onClick={() => {
+          jukeKey()
+          setPick({ g, i })
+        }}
       >
         <span className="jb-code">
           {LETTERS[g]}
@@ -113,7 +118,10 @@ export function Jukebox() {
                       key={l}
                       className={letter === g ? "is-on" : undefined}
                       aria-pressed={letter === g}
-                      onClick={() => setLetter(g)}
+                      onClick={() => {
+                        jukeKey()
+                        setLetter(g)
+                      }}
                     >
                       {l}
                     </button>
