@@ -38,6 +38,11 @@
   white-space: pre;
 }
 
+.r-vcr__play {
+  align-self: center;
+  justify-self: center;
+}
+
 .r-vcr__ghost {
   visibility: hidden;
 }

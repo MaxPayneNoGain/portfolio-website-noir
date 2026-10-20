@@ -1,6 +1,7 @@
 "use client"
 
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react"
+import { enterKey, keyClick, tvStatic, unlock } from "@/lib/sound"
 import "./vcr-intro.css"
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -90,7 +91,7 @@ function Snow() {
 }
 
 export function VcrIntro({ children }: { children: ReactNode }) {
-  const [phase, setPhase] = useState<"typing" | "static" | "done">("typing")
+  const [phase, setPhase] = useState<"ready" | "typing" | "static" | "done">("ready")
   const [played, setPlayed] = useState(false)
   const [typed, setTyped] = useState({ line: 0, text: "" })
   const [stamp, setStamp] = useState({ date: "--- -- ----", time: "--:-- --" })
@@ -123,6 +124,7 @@ export function VcrIntro({ children }: { children: ReactNode }) {
       if (key < keys.length) {
         const k = keys[key++]
         text = k === "\b" ? text.slice(0, -1) : text + k
+        keyClick()
         setTyped({ line, text })
 
         const next = keys[key]
@@ -142,6 +144,7 @@ export function VcrIntro({ children }: { children: ReactNode }) {
 
       line++
       key = 0
+      enterKey()
       text = ""
       setTyped({ line, text })
       if (line >= SCRIPT.length) {
@@ -157,12 +160,22 @@ export function VcrIntro({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (phase !== "static") return
+    const hiss = tvStatic()
     const timer = setTimeout(finish, 700)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      hiss()
+    }
   }, [phase, finish])
 
-  // skipping during the typing cuts to static first
-  const skip = useCallback(() => (phase === "typing" ? setPhase("static") : finish()), [phase, finish])
+  // the first press starts the tape, after that skipping the typing cuts to static
+  const skip = useCallback(() => {
+    if (phase === "ready") {
+      unlock()
+      setPhase("typing")
+    } else if (phase === "typing") setPhase("static")
+    else finish()
+  }, [phase, finish])
 
   useEffect(() => {
     if (phase === "done") return
@@ -185,20 +198,26 @@ export function VcrIntro({ children }: { children: ReactNode }) {
             <span>{mode}</span>
             <span>SP</span>
           </div>
-          <pre className="r-vcr__code">
-            {LINES.map((text, i) => (
-              <div key={i} className={i > typed.line ? "r-vcr__ghost" : undefined}>
-                <span className="r-vcr__prompt">&gt; </span>
-                {i === typed.line ? typed.text : text}
-                {i === typed.line && <span className="r-blink">█</span>}
-              </div>
-            ))}
-          </pre>
+          {phase === "ready" ? (
+            <div className="r-vcr__play">
+              <span className="r-blink">▶</span> PRESS PLAY
+            </div>
+          ) : (
+            <pre className="r-vcr__code">
+              {LINES.map((text, i) => (
+                <div key={i} className={i > typed.line ? "r-vcr__ghost" : undefined}>
+                  <span className="r-vcr__prompt">&gt; </span>
+                  {i === typed.line ? typed.text : text}
+                  {i === typed.line && <span className="r-blink">█</span>}
+                </div>
+              ))}
+            </pre>
+          )}
           <div className="r-vcr__row">
             <span>{stamp.date}</span>
             <span>{stamp.time}</span>
           </div>
-          <div className="r-vcr__skip">CLICK OR PRESS ANY KEY TO SKIP</div>
+          <div className="r-vcr__skip">{phase === "ready" ? "CLICK OR PRESS ANY KEY" : "CLICK OR PRESS ANY KEY TO SKIP"}</div>
           {phase === "static" && <Snow />}
         </div>
       )}
