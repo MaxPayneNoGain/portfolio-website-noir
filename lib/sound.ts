@@ -181,6 +181,23 @@ export function coin() {
   chip(ac, t + 0.28, 1319, 0.06, 0.4)
 }
 
+// menu cursor: a quick square chirp up
+export function blip() {
+  if (!ctx) return
+  const t = ctx.currentTime
+  const osc = ctx.createOscillator()
+  osc.type = "square"
+  osc.frequency.setValueAtTime(620, t)
+  osc.frequency.exponentialRampToValueAtTime(1240, t + 0.04)
+  const env = ctx.createGain()
+  env.gain.setValueAtTime(0.05, t)
+  env.gain.setValueAtTime(0.05, t + 0.04)
+  env.gain.exponentialRampToValueAtTime(0.001, t + 0.07)
+  osc.connect(env).connect(out)
+  osc.start(t)
+  osc.stop(t + 0.07)
+}
+
 // where the jazz picks up the first time, in seconds. after that it loops from the top
 const JAZZ_FROM = 90
 

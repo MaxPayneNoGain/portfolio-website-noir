@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Press_Start_2P } from "next/font/google"
 import { PROJECTS, WORK } from "@/lib/content"
-import { coin } from "@/lib/sound"
+import { blip, coin } from "@/lib/sound"
 import "./arcade.css"
 
 const pixel = Press_Start_2P({ subsets: ["latin"], weight: "400" })
@@ -75,7 +75,10 @@ export function Arcade() {
                         ref={wi === 0 && i === 0 ? firstStage : undefined}
                         className={`arc-stage${pick === e.id ? " is-on" : ""}`}
                         aria-pressed={pick === e.id}
-                        onClick={() => setPick(e.id)}
+                        onClick={() => {
+                          if (pick !== e.id) blip()
+                          setPick(e.id)
+                        }}
                       >
                         <span>
                           {wi + 1}-{i + 1}
