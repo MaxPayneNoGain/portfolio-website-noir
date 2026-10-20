@@ -140,6 +140,47 @@ export function crtOn() {
   whoosh.start(t, Math.random() * 0.5, 0.35)
 }
 
+// a metal ring that dies fast
+function ring(ac: AudioContext, at: number, freq: number, gain: number, decay: number) {
+  const osc = ac.createOscillator()
+  osc.frequency.value = freq
+  const env = ac.createGain()
+  env.gain.setValueAtTime(gain, at)
+  env.gain.exponentialRampToValueAtTime(0.001, at + decay)
+  osc.connect(env).connect(out)
+  osc.start(at)
+  osc.stop(at + decay)
+}
+
+// one 8-bit note
+function chip(ac: AudioContext, at: number, freq: number, gain: number, length: number) {
+  const osc = ac.createOscillator()
+  osc.type = "square"
+  osc.frequency.value = freq
+  const env = ac.createGain()
+  env.gain.setValueAtTime(gain, at)
+  env.gain.setValueAtTime(gain, at + length * 0.6)
+  env.gain.exponentialRampToValueAtTime(0.001, at + length)
+  osc.connect(env).connect(out)
+  osc.start(at)
+  osc.stop(at + length)
+}
+
+// the quarter clinking into the slot, then the machine's credit chime
+export function coin() {
+  if (!ctx) return
+  const ac = ctx
+  const t = ac.currentTime
+  burst(ac, t, 6000, 2, 0.3, 0.02)
+  ring(ac, t, 2780, 0.12, 0.25)
+  ring(ac, t, 4170, 0.07, 0.18)
+  burst(ac, t + 0.07, 5200, 2, 0.15, 0.02)
+  ring(ac, t + 0.07, 3310, 0.06, 0.15)
+
+  chip(ac, t + 0.2, 988, 0.06, 0.08)
+  chip(ac, t + 0.28, 1319, 0.06, 0.4)
+}
+
 // where the jazz picks up the first time, in seconds. after that it loops from the top
 const JAZZ_FROM = 90
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Press_Start_2P } from "next/font/google"
 import { PROJECTS, WORK } from "@/lib/content"
+import { coin } from "@/lib/sound"
 import "./arcade.css"
 
 const pixel = Press_Start_2P({ subsets: ["latin"], weight: "400" })
@@ -39,7 +40,11 @@ export function Arcade() {
     if (playing) firstStage.current?.focus({ preventScroll: true })
   }, [playing])
 
-  const insert = () => setCredit(true)
+  const insert = () => {
+    if (credit) return
+    coin()
+    setCredit(true)
+  }
 
   return (
     <section id="work" className="r-section">
