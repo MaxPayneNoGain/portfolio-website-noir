@@ -184,6 +184,8 @@ export function VcrIntro({ children }: { children: ReactNode }) {
     const onKey = (e: KeyboardEvent) => {
       // leave browser shortcuts alone
       if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+      // keys on the volume button are for the volume
+      if (e.target instanceof Element && e.target.closest(".r-volume")) return
       skip()
     }
     window.addEventListener("keydown", onKey)
@@ -200,21 +202,24 @@ export function VcrIntro({ children }: { children: ReactNode }) {
             <span>{mode}</span>
             <span>SP</span>
           </div>
-          {phase === "ready" ? (
-            <div className="r-vcr__play">
-              <span className="r-blink">▶</span> PRESS PLAY
-            </div>
-          ) : (
-            <pre className="r-vcr__code">
-              {LINES.map((text, i) => (
-                <div key={i} className={i > typed.line ? "r-vcr__ghost" : undefined}>
-                  <span className="r-vcr__prompt">&gt; </span>
-                  {i === typed.line ? typed.text : text}
-                  {i === typed.line && <span className="r-blink">█</span>}
-                </div>
-              ))}
-            </pre>
-          )}
+          <div className="r-vcr__mid">
+            <div className="r-vcr__warn">THIS TAPE HAS SOUND</div>
+            {phase === "ready" ? (
+              <div>
+                <span className="r-blink">▶</span> PRESS PLAY
+              </div>
+            ) : (
+              <pre className="r-vcr__code">
+                {LINES.map((text, i) => (
+                  <div key={i} className={i > typed.line ? "r-vcr__ghost" : undefined}>
+                    <span className="r-vcr__prompt">&gt; </span>
+                    {i === typed.line ? typed.text : text}
+                    {i === typed.line && <span className="r-blink">█</span>}
+                  </div>
+                ))}
+              </pre>
+            )}
+          </div>
           <div className="r-vcr__row">
             <span>{stamp.date}</span>
             <span>{stamp.time}</span>

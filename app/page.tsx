@@ -9,24 +9,29 @@ import { Jukebox } from "@/components/retro/jukebox"
 import { Overlays } from "@/components/retro/overlays"
 import { Signs } from "@/components/retro/signs"
 import { VcrIntro } from "@/components/retro/vcr-intro"
+import { Volume } from "@/components/retro/volume"
 import { Weather } from "@/components/retro/weather"
 
 export default function Home() {
   return (
-    <VcrIntro>
-      <Weather />
-      <Overlays />
-      <Hud />
-      <main className="r-main">
-        <Hero />
-        <FrontPage />
-        <Arcade />
-        <Signs />
-        <Drink />
-        <Jukebox />
-        <Contact />
-      </main>
-      <Footer />
-    </VcrIntro>
+    <>
+      {/* outside the intro so it works while the tape loads */}
+      <Volume />
+      <VcrIntro>
+        <Weather />
+        <Overlays />
+        <Hud />
+        <main className="r-main">
+          <Hero />
+          <FrontPage />
+          <Arcade />
+          <Signs />
+          <Drink />
+          <Jukebox />
+          <Contact />
+        </main>
+        <Footer />
+      </VcrIntro>
+    </>
   )
 }

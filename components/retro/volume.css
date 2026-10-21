@@ -1,0 +1,47 @@
+/* same on-screen text as the tape hud, and above the intro too */
+.r-volume {
+  position: fixed;
+  right: 22px;
+  bottom: 16px;
+  z-index: 101;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #f4f4f4;
+  font-family: var(--font-lcd);
+  font-size: 1.6rem;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.75);
+  white-space: pre;
+  cursor: pointer;
+}
+
+.r-volume:focus-visible {
+  outline: 2px solid #f4f4f4;
+  outline-offset: 4px;
+}
+
+/* the bars fill in one by one when the sound comes back */
+.r-volume__bars span {
+  animation: r-vol-in 0.01s steps(1) backwards;
+}
+
+@keyframes r-vol-in {
+  from {
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 860px) {
+  .r-volume {
+    right: 14px;
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .r-volume {
+    font-size: 0.95rem;
+  }
+}

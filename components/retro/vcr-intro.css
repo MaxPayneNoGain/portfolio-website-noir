@@ -26,9 +26,20 @@
   gap: 1rem;
 }
 
-.r-vcr__code {
+.r-vcr__mid {
   align-self: center;
   justify-self: center;
+  display: grid;
+  justify-items: center;
+  gap: 5vh;
+}
+
+.r-vcr__warn {
+  font-size: 0.5em;
+  letter-spacing: 0.15em;
+}
+
+.r-vcr__code {
   /* longest line + cursor */
   width: 32ch;
   margin: 0;
@@ -36,11 +47,6 @@
   font-size: min(0.75em, 3.6vw);
   line-height: 1.4;
   white-space: pre;
-}
-
-.r-vcr__play {
-  align-self: center;
-  justify-self: center;
 }
 
 .r-vcr__ghost {

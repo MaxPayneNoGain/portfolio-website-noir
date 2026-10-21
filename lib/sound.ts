@@ -1,14 +1,17 @@
 // every sound plays from here, on one audio context opened by the first click or key
 
+const VOLUME = 0.6
+
 let ctx: AudioContext | null = null
 let out: GainNode
 let noise: AudioBuffer
+let muted = false
 
 export function unlock() {
   if (!ctx) {
     ctx = new AudioContext()
     out = ctx.createGain()
-    out.gain.value = 0.6
+    out.gain.value = muted ? 0 : VOLUME
     out.connect(ctx.destination)
 
     noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate)
@@ -16,6 +19,16 @@ export function unlock() {
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1
   }
   if (ctx.state === "suspended") ctx.resume()
+}
+
+// fades everything out or back in
+export function setMuted(on: boolean) {
+  muted = on
+  if (!ctx) return
+  const t = ctx.currentTime
+  out.gain.cancelScheduledValues(t)
+  out.gain.setValueAtTime(out.gain.value, t)
+  out.gain.linearRampToValueAtTime(on ? 0 : VOLUME, t + 0.3)
 }
 
 // a filtered tick of noise, the click part of a key
