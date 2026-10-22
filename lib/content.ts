@@ -11,6 +11,7 @@ export type Entry = {
   org: string
   dates?: string
   tech?: string[]
+  href?: string
   points: string[]
 }
 
@@ -45,6 +46,7 @@ export const PROJECTS: Entry[] = [
     title: "Premier League Predictive Data",
     org: "Personal project",
     tech: ["Python", "FastAPI", "PostgreSQL", "pandas", "SciPy"],
+    href: "https://github.com/MaxPayneNoGain/Premier-League-Predictive-Data",
     points: [
       "Match model over two seasons of fixture and odds data: win/draw/loss odds, scorelines and expected goals for every game.",
       "Tested on 700 unseen matches, it closed 77% of the gap between league averages and the betting market.",

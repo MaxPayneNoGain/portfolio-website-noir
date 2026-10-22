@@ -184,6 +184,29 @@
   font-size: 8px;
 }
 
+.arc-brief__link {
+  display: inline-block;
+  margin-top: 14px;
+  color: #ffd400;
+  font-size: 9px;
+  text-decoration: none;
+}
+
+/* same arrow as the stage cursor, the font has no triangle */
+.arc-brief__link::after {
+  content: "";
+  display: inline-block;
+  margin-left: 8px;
+  border-left: 6px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+.arc-brief__link:hover,
+.arc-brief__link:focus-visible {
+  text-decoration: underline;
+}
+
 .arc-door {
   display: flex;
   justify-content: center;
