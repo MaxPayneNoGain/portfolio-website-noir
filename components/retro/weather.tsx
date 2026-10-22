@@ -13,7 +13,7 @@ export function Weather() {
   useEffect(() => {
     const canvas = ref.current
     const ctx = canvas?.getContext("2d")
-    if (!canvas || !ctx || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (!canvas || !ctx || window.matchMedia("(prefers-reduced-motion: reduce), (hover: none)").matches) return
 
     let width = 0
     let height = 0

@@ -42,6 +42,13 @@
   animation-direction: reverse;
 }
 
+/* too heavy for phones */
+@media (hover: none) {
+  .r-weather {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .r-weather__fog span {
     animation: none;

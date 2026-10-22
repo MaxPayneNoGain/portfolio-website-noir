@@ -395,6 +395,14 @@
   }
 }
 
+/* too heavy for phones */
+@media (hover: none) {
+  .r-fog,
+  .r-rain {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .r-open,
   .r-fog span,
