@@ -61,6 +61,7 @@ export const PROJECTS: Entry[] = [
     title: "Pothole Detection",
     org: "Personal project",
     tech: ["Python", "TensorFlow", "scikit-learn", "NumPy"],
+    href: "https://github.com/MaxPayneNoGain/Pothole-Detection-ML-Project",
     points: [
       "Image classifier trained on 1,294 road photos merged from two public datasets, deduplicated and stratified.",
       "Transfer learning on MobileNetV2 beat a from-scratch CNN, lifting accuracy from 87.6% to 96.1%.",
