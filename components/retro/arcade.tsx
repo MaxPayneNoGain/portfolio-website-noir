@@ -102,7 +102,7 @@ export function Arcade() {
                 {entry.tech && <div className="arc-brief__tech">POWER-UPS: {entry.tech.join(" · ")}</div>}
                 {entry.href && (
                   <a className="arc-brief__link" href={entry.href} target="_blank" rel="noopener noreferrer">
-                    VIEW SOURCE
+                    {entry.cta ?? "VIEW SOURCE"}
                   </a>
                 )}
               </div>

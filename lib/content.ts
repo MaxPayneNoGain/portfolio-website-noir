@@ -12,6 +12,7 @@ export type Entry = {
   dates?: string
   tech?: string[]
   href?: string
+  cta?: string
   points: string[]
 }
 
@@ -21,6 +22,8 @@ export const WORK: Entry[] = [
     title: "Digital Innovation Specialist",
     org: "Roy Howard Community Journalism Center · Hattiesburg, MS",
     dates: "MAY 2026 — PRESENT",
+    href: "https://apps.apple.com/us/app/rhcjc-news/id6761484738",
+    cta: "APP STORE",
     points: [
       "Shipped the RHCJC News app (React Native) to the App Store and Google Play, handling builds, code signing and distribution.",
       "Built production web features for a news site reaching 65,000+ readers across 10 Mississippi counties, cutting manual publishing work by over 90%.",
