@@ -1,6 +1,6 @@
 # portfolio-website-noir
 
-My personal portfolio. It's a single page styled as a rainy 90s night on a VHS tape.
+My personal portfolio, live at [nischitsharma.com](https://nischitsharma.com). It's a single page styled as a rainy 90s night on a VHS tape, with sound.
 
 The page is made of these sections:
 
