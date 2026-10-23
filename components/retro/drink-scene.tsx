@@ -104,9 +104,31 @@ const ADDITIVE = {
   blending: THREE.CustomBlending,
   blendSrc: THREE.OneFactor,
   blendDst: THREE.OneFactor,
-  blendSrcAlpha: THREE.ZeroFactor,
+  blendSrcAlpha: THREE.OneFactor,
   blendDstAlpha: THREE.OneFactor,
   depthWrite: false,
+}
+
+// alpha as strong as the brightest channel; chrome and safari on macs
+// drop the color from pixels that have color but no alpha
+function lightAlpha(s: THREE.WebGLProgramParametersWithUniforms) {
+  s.fragmentShader = s.fragmentShader.replace(
+    "#include <dithering_fragment>",
+    `#include <dithering_fragment>
+    gl_FragColor.a = max(gl_FragColor.r, max(gl_FragColor.g, gl_FragColor.b));`,
+  )
+}
+
+function glassMaterial() {
+  const m = new THREE.MeshPhysicalMaterial({
+    color: "#202328",
+    roughness: 0,
+    envMapIntensity: 1.8,
+    side: THREE.DoubleSide,
+    ...ADDITIVE,
+  })
+  m.onBeforeCompile = lightAlpha
+  return m
 }
 
 function liquidMaterial(depth: THREE.Texture) {
@@ -147,6 +169,7 @@ function iceMaterial(surface: { value: number }) {
           ? vec3(1.0, 0.62, 0.25) * (0.04 + edge * 0.4)
           : vec3(0.85, 0.92, 1.0) * (0.01 + edge * 0.55);`,
       )
+    lightAlpha(s)
   }
   return m
 }
@@ -214,6 +237,7 @@ function Rocks({ glass }: { glass: Glass }) {
       iceA: meltedIce(0.6),
       iceB: meltedIce(0.55),
       stream: new THREE.CylinderGeometry(0.028, 0.034, 1, 24).translate(0, 0.5, 0),
+      glassMat: glassMaterial(),
       liquidMat: liquidMaterial(linear("#5a2805", "#f2a040")),
       iceMat: iceMaterial(surfaceY),
       top: new THREE.MeshPhysicalMaterial({
@@ -288,9 +312,7 @@ function Rocks({ glass }: { glass: Glass }) {
   return (
     <group>
       <group ref={held}>
-        <mesh geometry={res.glass} renderOrder={3}>
-          <meshPhysicalMaterial color="#202328" roughness={0} envMapIntensity={1.8} side={THREE.DoubleSide} {...ADDITIVE} />
-        </mesh>
+        <mesh geometry={res.glass} material={res.glassMat} renderOrder={3} />
         <mesh ref={liquid} geometry={res.liquid} material={[res.liquidMat, res.top, res.liquidMat]} position-y={FLOOR} renderOrder={1} />
         <mesh geometry={res.iceA} material={res.iceMat} position={[-0.32, FLOOR + 0.3, -0.2]} rotation-y={0.35} renderOrder={2} />
         <mesh geometry={res.iceB} material={res.iceMat} position={[0.3, FLOOR + 0.275, 0.22]} rotation-y={-0.5} renderOrder={2} />
